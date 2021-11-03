@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+import serial
+import time
+import turtle
+import os
+
+
+
+text = turtle.Turtle()
+background = turtle.Screen()
+background.setup(width=2000,height=1050)
+background.bgcolor('black')
+text.color('purple')
+style = ('Agency FB', 60, 'bold')
+text.write('Welcome to Mirror Maze_', font=style, align='center')
+#playsound('sparkles.wav')
+#os.system("aplay sparkles.wav")
+time.sleep(5)
+text.clear()
+style = ('Agency FB', 40, 'italic')
+text.write('    _INCOMING MESSAGE: invaders headed for our planet_', font=style, align='center')
+time.sleep(5)
+text.clear()
+text.write('          Your mission is to launch attacks to our Enemy Troops', font=style, align='center')
+time.sleep(5)
+text.clear()
+text.write('     You have 60 seconds to transmit a blast to the invaders', font=style, align='center')
+time.sleep(5)
+text.clear()
+text.write('      If you fail our planet will be destroyed.', font=style, align='center')
+time.sleep(5)
+text.clear()
+text.write('      Good Luck Cadet and may your aim be sharp!_', font=style, align='center')
+time.sleep(5)
+text.clear()
+total = 0
+
+
+time_limit = 60
+start_time = time.time()
+print (start_time)
+
+if __name__ == '__main__':
+    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    ser.flush()
+    while True:
+        elapsed_time = time.time() - start_time
+        print(time_limit - int(elapsed_time))
+        if elapsed_time > time_limit:
+            text.clear()
+            text.write('TIMES UP *** TARGETS HIT= '+ str(total), font=style, align='center')
+            time.sleep(5)
+            text.clear()
+            time_limit = 60
+            start_time = time.time()
+            #exit()
+            elapsed_time = time.time()
+            total =0;
+        if ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            print(line)
+            if line == "Detected from first sensor!":
+                text.clear()
+                text.write('STAR BASE 1: Signal recieved_', font=style, align='center')
+                #sensor1 = 1
+                total = total+1
+                
+            if line == "Detected from 2nd sensor!":
+                text.clear()
+                text.write('STAR BASE 2: Signal recieved_', font=style, align='center')
+                #sensor2 = 1
+                total = total+1
+                
+            if line == "Detected from 3rd sensor!":
+                text.clear()
+                text.write('STAR BASE 3: Signal recieved_', font=style, align='center')
+                #sensor3 = 1
+                total = total+1
+                
+            if line == "Detected from 4th sensor!":
+                text.clear()
+                text.write('STAR BASE 4: Signal recieved_', font=style, align='center')
+                #sensor4 = 1
+                total = total+1
+
+        #if total >=4:
+         #   text.clear()
+          #  text.write('*YOU WIN*', font=style, align='center')
+           # time.sleep(5)
+            #text.clear()
+            #time_limit = 60
+            #start_time = time.time()
+            #exit()
+            #elapsed_time = time.time()  
+            
